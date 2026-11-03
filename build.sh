@@ -17,6 +17,6 @@ fi
 python manage.py collectstatic --no-input
 python manage.py migrate
 
-# Automatically create/reset default admin user
-python manage.py shell -c "from django.contrib.auth.models import User; u, _ = User.objects.get_or_create(username='admin', defaults={'email': 'admin@example.com'}); u.set_password('admin123'); u.is_superuser = True; u.is_staff = True; u.is_active = True; u.save(); print('>>> ADMIN READY: admin / admin123 <<<')"
+# Create admin only if no superuser exists yet
+python manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(is_superuser=True).exists() or User.objects.create_superuser('admin', 'admin@example.com', 'admin123')"
 

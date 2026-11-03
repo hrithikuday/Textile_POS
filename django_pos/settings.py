@@ -29,26 +29,28 @@ ALLOWED_HOSTS = [
     host.strip()
     for host in os.environ.get(
         "DJANGO_ALLOWED_HOSTS",
-        "localhost,127.0.0.1,probe-mule-mold.ngrok-free.dev",
+        "localhost,127.0.0.1,pos.hrithikuday.in,.hrithikuday.in,textile-pos-db.onrender.com",
     ).split(",")
     if host.strip()
 ]
 
 render_external_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if render_external_hostname:
+if render_external_hostname and render_external_hostname not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(render_external_hostname)
 
 CSRF_TRUSTED_ORIGINS = [
     origin.strip()
     for origin in os.environ.get(
         "DJANGO_CSRF_TRUSTED_ORIGINS",
-        "https://probe-mule-mold.ngrok-free.dev",
+        "https://pos.hrithikuday.in,https://textile-pos-db.onrender.com",
     ).split(",")
     if origin.strip()
 ]
 
 if render_external_hostname:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{render_external_hostname}")
+    render_origin = f"https://{render_external_hostname}"
+    if render_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(render_origin)
 
 
 # Application definition
