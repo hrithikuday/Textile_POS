@@ -1,0 +1,21 @@
+{% extends "pos/base.html" %}
+{% block title %}Ledger{% endblock %}
+{% block heading %}Ledger{% endblock %}
+{% block content %}
+<div class="row mb-3">
+    <div class="col-md-4 mb-3"><div class="card border-left-success shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-success text-uppercase mb-1">Sales receipts</div><div class="h5 mb-0 font-weight-bold">{{ sales_total|floatformat:2 }}</div></div></div></div>
+    <div class="col-md-4 mb-3"><div class="card border-left-warning shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Refunds</div><div class="h5 mb-0 font-weight-bold">{{ refund_total|floatformat:2 }}</div></div></div></div>
+    <div class="col-md-4 mb-3"><div class="card border-left-primary shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Net balance</div><div class="h5 mb-0 font-weight-bold">{{ net_total|floatformat:2 }}</div></div></div></div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header font-weight-bold text-primary">Transaction ledger</div>
+    <div class="card-body table-responsive">
+        <table class="table table-bordered">
+            <thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Recorded by</th><th class="text-right">Amount</th></tr></thead>
+            <tbody>{% for entry in entries %}
+            <tr><td>{{ entry.created_at|date:"Y-m-d H:i" }}</td><td>{{ entry.get_entry_type_display }}</td><td>{{ entry.description }}</td><td>{{ entry.created_by|default:"—" }}</td><td class="text-right">{{ entry.amount|floatformat:2 }}</td></tr>
+            {% empty %}<tr><td colspan="5" class="text-center">No transactions recorded.</td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

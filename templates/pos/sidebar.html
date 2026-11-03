@@ -1,0 +1,100 @@
+{% load static %}
+
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'pos:index' %}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-store"></i>
+        </div>
+        <div class="sidebar-brand-text mx-2">Textile POS</div>
+    </a>
+
+    <hr class="sidebar-divider my-0">
+
+    {% if request.user.is_superuser or request.user.is_staff %}
+    <li class="{% if active_icon == 'dashboard' %}nav-item active{% else %}nav-item{% endif %}">
+        <a class="nav-link" href="{% url 'pos:index' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider my-0">
+
+    <li class="{% if 'products' in active_icon %}nav-item active{% else %}nav-item{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProducts"
+            aria-expanded="{% if 'products' in active_icon %}true{% else %}false{% endif %}" aria-controls="collapseProducts">
+            <i class="fas fa-fw fa-tag"></i>
+            <span>Products</span>
+        </a>
+        <div id="collapseProducts" class="{% if 'products' in active_icon %}collapse show{% else %}collapse{% endif %}">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="{% if active_icon == 'products_categories' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'products:categories_list' %}">Categories</a>
+                <a class="{% if active_icon == 'products' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'products:products_list' %}">Products & stock</a>
+            </div>
+        </div>
+    </li>
+
+    <hr class="sidebar-divider my-0">
+    {% endif %}
+
+    <li class="{% if active_icon == 'customers' %}nav-item active{% else %}nav-item{% endif %}">
+        <a class="nav-link" href="{% url 'customers:customers_list' %}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Customers</span>
+        </a>
+    </li>
+
+    {% if request.user.is_superuser or request.user.is_staff %}
+    <hr class="sidebar-divider my-0">
+    <li class="{% if active_icon == 'billing' %}nav-item active{% else %}nav-item{% endif %}">
+        <a class="nav-link" href="{% url 'sales:sales_add' %}">
+            <i class="fas fa-fw fa-cash-register"></i>
+            <span>Billing</span>
+        </a>
+    </li>
+    <li class="{% if active_icon == 'transactions' %}nav-item active{% else %}nav-item{% endif %}">
+        <a class="nav-link" href="{% url 'sales:sales_list' %}">
+            <i class="fas fa-fw fa-cart-plus"></i>
+            <span>Sales</span>
+        </a>
+    </li>
+
+    <hr class="sidebar-divider my-0">
+    <li class="{% if active_icon in 'suppliers staff returns ledger reports' %}nav-item active{% else %}nav-item{% endif %}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseManagement"
+            aria-expanded="false" aria-controls="collapseManagement">
+            <i class="fas fa-fw fa-briefcase"></i>
+            <span>Management</span>
+        </a>
+        <div id="collapseManagement" class="{% if active_icon in 'suppliers staff returns ledger reports' %}collapse show{% else %}collapse{% endif %}">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="{% if active_icon == 'suppliers' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'operations:suppliers' %}">Suppliers</a>
+                <a class="{% if active_icon == 'staff' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'operations:staff' %}">Staff</a>
+                <a class="{% if active_icon == 'returns' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'operations:returns' %}">Returns</a>
+                <a class="{% if active_icon == 'ledger' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'operations:ledger' %}">Ledger</a>
+                <a class="{% if active_icon == 'reports' %}collapse-item active{% else %}collapse-item{% endif %}"
+                    href="{% url 'operations:reports' %}">Reports</a>
+            </div>
+        </div>
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block">
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+    {% endif %}
+
+    {% if request.user.is_superuser or request.user.is_staff %}
+    <li class="nav-item mobile-view-switch">
+        <a class="nav-link" href="{% url 'operations:desktop_admin' %}">
+            <i class="fas fa-fw fa-desktop"></i><span>Desktop view</span>
+        </a>
+    </li>
+    {% endif %}
+</ul>

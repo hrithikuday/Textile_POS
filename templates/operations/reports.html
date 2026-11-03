@@ -1,0 +1,22 @@
+{% extends "pos/base.html" %}
+{% block title %}Reports{% endblock %}
+{% block heading %}Reports & stock overview{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-3 mb-3"><div class="card border-left-primary shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Products</div><div class="h5 mb-0 font-weight-bold">{{ product_count }}</div></div></div></div>
+    <div class="col-md-3 mb-3"><div class="card border-left-success shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-success text-uppercase mb-1">Sales</div><div class="h5 mb-0 font-weight-bold">{{ sales_count }}</div><small>{{ sales_total|floatformat:2 }} total</small></div></div></div>
+    <div class="col-md-3 mb-3"><div class="card border-left-warning shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Returns</div><div class="h5 mb-0 font-weight-bold">{{ return_count }}</div><small>{{ refund_total|floatformat:2 }} refunded</small></div></div></div>
+    <div class="col-md-3 mb-3"><div class="card border-left-danger shadow h-100"><div class="card-body"><div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Low stock</div><div class="h5 mb-0 font-weight-bold">{{ low_stock|length }}</div><small>5 or fewer units</small></div></div></div>
+</div>
+<div class="card shadow">
+    <div class="card-header font-weight-bold text-primary">Low stock products</div>
+    <div class="card-body table-responsive">
+        <table class="table table-bordered">
+            <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>On hand</th></tr></thead>
+            <tbody>{% for product in low_stock %}
+            <tr><td>{{ product.name }}</td><td>{{ product.sku }}</td><td>{{ product.category.name }}</td><td>{{ product.stock_quantity }}</td></tr>
+            {% empty %}<tr><td colspan="4" class="text-center">No low-stock products.</td></tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
